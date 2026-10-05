@@ -1,11 +1,6 @@
 # Deadlock Lab: Deadlock Detection, Simulation & Recovery Engine
 
-[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688.svg)](https://fastapi.tiangolo.com)
-[![Pytest Suite](https://img.shields.io/badge/tests-1024%20passed-brightgreen.svg)](tests/)
-[![Coverage](https://img.shields.io/badge/coverage-90%25%2B-success.svg)](engine/)
-[![UI Style](https://img.shields.io/badge/theme-pitch--black%20glassmorphism-9333ea.svg)](static/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+**Python 3.10+** • **FastAPI** • **1,024 Passing Pytests** • **90%+ Coverage** • **Pitch-Black Glassmorphic UI** • **MIT License**
 
 An academic and industrial-grade **Deadlock Detection, Discrete-Event Simulation, and Automated Recovery System** for Operating Systems. Features a dual-engine algorithmic core (Wait-For-Graph with Tarjan's SCC & General Matrix Reduction), multi-mode tick-based concurrency simulator, cost-based automated recovery strategies, and an interactive **pitch-black obsidian glassmorphic** web dashboard.
 
