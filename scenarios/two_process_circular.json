@@ -1,0 +1,42 @@
+{
+  "resources": {
+    "R0": 1,
+    "R1": 1
+  },
+  "processes": [
+    {
+      "id": 0,
+      "name": "P0",
+      "priority": 1
+    },
+    {
+      "id": 1,
+      "name": "P1",
+      "priority": 1
+    }
+  ],
+  "allocation": [
+    [
+      1,
+      0
+    ],
+    [
+      0,
+      1
+    ]
+  ],
+  "request": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      0
+    ]
+  ],
+  "available": [
+    0,
+    0
+  ]
+}
