@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <title>Deadlock Lab</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Base inline styles just to ensure it renders if css fails */
+        body { font-family: system-ui, sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; height: 100vh; }
+        header { padding: 10px 20px; background: var(--bg-header); display: flex; justify-content: space-between; align-items: center; }
+        .container { display: flex; flex: 1; overflow: hidden; }
+        aside { width: 250px; padding: 20px; background: var(--bg-panel); overflow-y: auto; }
+        main { flex: 1; padding: 20px; display: flex; flex-direction: column; overflow-y: auto; }
+        .banner { padding: 15px; text-align: center; font-weight: bold; margin-bottom: 20px; border-radius: 5px; }
+        .banner.safe { background: var(--safe-bg); color: var(--safe-text); }
+        .banner.deadlock { background: var(--deadlock-bg); color: var(--deadlock-text); }
+        .graph-container { flex: 1; min-height: 300px; background: var(--bg-graph); border: 1px solid var(--border); border-radius: 5px; position: relative; }
+        .tables { display: flex; gap: 20px; margin-top: 20px; }
+        table { border-collapse: collapse; width: 100%; text-align: center; }
+        td, th { border: 1px solid var(--border); padding: 5px; }
+        .right-panel { width: 300px; border-left: 1px solid var(--border); }
+        .log-box { height: 200px; overflow-y: auto; background: var(--bg-graph); font-family: monospace; font-size: 0.9em; padding: 10px; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Deadlock Lab</h1>
+        <div>
+            <button id="theme-toggle">Toggle Theme</button>
+        </div>
+    </header>
+    <div class="container">
+        <aside>
+            <h3>Controls</h3>
+            <label>Mode:</label>
+            <select id="mode-select" style="width: 100%; margin-bottom: 15px;">
+                <option value="static">Static (Matrix)</option>
+                <option value="simulation">Simulation (Tick)</option>
+            </select>
+            
+            <label>Scenario:</label>
+            <select id="scenario-select" style="width: 100%; margin-bottom: 15px;"></select>
+            
+            <div id="sim-controls" style="display:none;">
+                <label>Recovery Strategy:</label>
+                <select id="strategy-select" style="width: 100%; margin-bottom: 15px;">
+                    <option value="none">Manual / None</option>
+                    <option value="terminate_one">Terminate One (Cost)</option>
+                    <option value="terminate_all">Terminate All</option>
+                    <option value="preemption">Resource Preemption</option>
+                </select>
+                <button id="btn-start" style="width: 100%; margin-bottom: 5px;">Start Simulation</button>
+                <button id="btn-step" style="width: 100%; margin-bottom: 5px;" disabled>Step Tick</button>
+                <button id="btn-auto" style="width: 100%; margin-bottom: 5px;" disabled>Auto-Run / Pause</button>
+            </div>
+            
+            <div id="static-controls">
+                <button id="btn-detect" style="width: 100%; margin-bottom: 5px;">Detect Deadlock</button>
+                <button id="btn-recover-auto" style="width: 100%; margin-bottom: 5px;">Auto Recover</button>
+            </div>
+            
+            <hr>
+            <h4>Manual Victim Selection</h4>
+            <p style="font-size: 0.9em; color: var(--text-muted);">Click a deadlocked process in the graph or select below to manually recover.</p>
+            <select id="victim-select" style="width: 100%; margin-bottom: 5px;"></select>
+            <button id="btn-recover-manual" style="width: 100%;" disabled>Recover Victim</button>
+        </aside>
+        
+        <main>
+            <div id="status-banner" class="banner safe">SAFE</div>
+            
+            <div class="graph-container" id="graph-container">
+                <!-- SVG rendered via D3 or Vanilla JS -->
+                <svg id="rag-svg" style="width: 100%; height: 100%;"></svg>
+            </div>
+            
+            <div class="tables" id="tables-container">
+                <div class="matrix">
+                    <h4>Allocation</h4>
+                    <table id="alloc-table"></table>
+                </div>
+                <div class="matrix">
+                    <h4>Request</h4>
+                    <table id="req-table"></table>
+                </div>
+                <div class="matrix">
+                    <h4>Available</h4>
+                    <table id="avail-table"></table>
+                </div>
+            </div>
+        </main>
+        
+        <aside class="right-panel">
+            <h3>Metrics & Trace</h3>
+            <div id="metrics-panel" style="font-size: 0.9em; line-height: 1.5; margin-bottom: 20px;">
+                <!-- Filled dynamically -->
+            </div>
+            <h3>Event Log</h3>
+            <div id="event-log" class="log-box"></div>
+        </aside>
+    </div>
+    
+    <script src="theme.js"></script>
+    <script src="graph.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

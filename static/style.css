@@ -1,0 +1,95 @@
+:root {
+    --bg-main: #ffffff;
+    --bg-header: #f0f0f0;
+    --bg-panel: #f9f9f9;
+    --bg-graph: #ffffff;
+    --text-main: #333333;
+    --text-muted: #666666;
+    --border: #dddddd;
+    
+    --safe-bg: #d4edda;
+    --safe-text: #155724;
+    --deadlock-bg: #f8d7da;
+    --deadlock-text: #721c24;
+    --warning-bg: #fff3cd;
+    --warning-text: #856404;
+}
+
+[data-theme="dark"] {
+    --bg-main: #1e1e1e;
+    --bg-header: #2d2d2d;
+    --bg-panel: #252526;
+    --bg-graph: #1e1e1e;
+    --text-main: #cccccc;
+    --text-muted: #888888;
+    --border: #3e3e42;
+    
+    --safe-bg: #1e4620;
+    --safe-text: #a3e4a7;
+    --deadlock-bg: #4a191e;
+    --deadlock-text: #f5a8b0;
+    --warning-bg: #5c4b12;
+    --warning-text: #ffebb0;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+}
+
+button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+button:disabled {
+    background: #555555;
+    cursor: not-allowed;
+}
+
+select, input {
+    background: var(--bg-graph);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+    padding: 5px;
+    border-radius: 4px;
+}
+
+table th {
+    background: var(--bg-header);
+}
+
+.graph-node {
+    cursor: pointer;
+    stroke: var(--border);
+    stroke-width: 2;
+}
+.graph-node.deadlocked {
+    stroke: #ff4444;
+    stroke-width: 4;
+}
+.graph-edge {
+    stroke: var(--text-muted);
+    stroke-width: 2;
+}
+.graph-edge.request {
+    stroke-dasharray: 5,5;
+}
+.graph-edge.cycle {
+    stroke: #ff4444;
+    stroke-width: 3;
+}
+.graph-text {
+    fill: var(--text-main);
+    font-size: 14px;
+    font-weight: bold;
+    pointer-events: none;
+    text-anchor: middle;
+    dominant-baseline: middle;
+}
+.resource-dot {
+    fill: #007bff;
+}
