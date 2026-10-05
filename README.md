@@ -454,11 +454,4 @@ Deadlock-Detection-and-Recovery-/
 └── README.md                  # Master documentation (this file)
 ```
 
----
 
-<div align="center">
-
-**Developed with precision for Operating Systems education and algorithmic research.**  
-Licensed under the [MIT License](LICENSE).
-
-</div>
