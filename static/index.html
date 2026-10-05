@@ -2,106 +2,216 @@
 <html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <title>Deadlock Lab</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        /* Base inline styles just to ensure it renders if css fails */
-        body { font-family: system-ui, sans-serif; margin: 0; padding: 0; display: flex; flex-direction: column; height: 100vh; }
-        header { padding: 10px 20px; background: var(--bg-header); display: flex; justify-content: space-between; align-items: center; }
-        .container { display: flex; flex: 1; overflow: hidden; }
-        aside { width: 250px; padding: 20px; background: var(--bg-panel); overflow-y: auto; }
-        main { flex: 1; padding: 20px; display: flex; flex-direction: column; overflow-y: auto; }
-        .banner { padding: 15px; text-align: center; font-weight: bold; margin-bottom: 20px; border-radius: 5px; }
-        .banner.safe { background: var(--safe-bg); color: var(--safe-text); }
-        .banner.deadlock { background: var(--deadlock-bg); color: var(--deadlock-text); }
-        .graph-container { flex: 1; min-height: 300px; background: var(--bg-graph); border: 1px solid var(--border); border-radius: 5px; position: relative; }
-        .tables { display: flex; gap: 20px; margin-top: 20px; }
-        table { border-collapse: collapse; width: 100%; text-align: center; }
-        td, th { border: 1px solid var(--border); padding: 5px; }
-        .right-panel { width: 300px; border-left: 1px solid var(--border); }
-        .log-box { height: 200px; overflow-y: auto; background: var(--bg-graph); font-family: monospace; font-size: 0.9em; padding: 10px; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deadlock Lab | OS Simulator</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/style.css?v=20261005_4">
 </head>
 <body>
-    <header>
-        <h1>Deadlock Lab</h1>
-        <div>
-            <button id="theme-toggle">Toggle Theme</button>
-        </div>
-    </header>
-    <div class="container">
-        <aside>
-            <h3>Controls</h3>
-            <label>Mode:</label>
-            <select id="mode-select" style="width: 100%; margin-bottom: 15px;">
-                <option value="static">Static (Matrix)</option>
-                <option value="simulation">Simulation (Tick)</option>
-            </select>
+    <div class="app-wrapper">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fa-solid fa-microchip"></i> Deadlock Lab</h2>
+                <button id="theme-toggle" class="icon-btn" title="Toggle Theme">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+            </div>
             
-            <label>Scenario:</label>
-            <select id="scenario-select" style="width: 100%; margin-bottom: 15px;"></select>
+            <div class="control-group">
+                <label for="mode-select"><i class="fa-solid fa-sliders"></i> Mode</label>
+                <select id="mode-select" class="modern-select">
+                    <option value="static">Static (Matrix & RAG)</option>
+                    <option value="simulation">Simulation (Tick-based)</option>
+                </select>
+                <div class="help-text" id="mode-help">Analyze a static snapshot of the system.</div>
+            </div>
             
-            <div id="sim-controls" style="display:none;">
-                <label>Recovery Strategy:</label>
-                <select id="strategy-select" style="width: 100%; margin-bottom: 15px;">
-                    <option value="none">Manual / None</option>
-                    <option value="terminate_one">Terminate One (Cost)</option>
+            <div class="control-group">
+                <label for="scenario-select"><i class="fa-solid fa-folder-open"></i> Scenario</label>
+                <select id="scenario-select" class="modern-select"></select>
+            </div>
+
+            <!-- Static Controls -->
+            <div id="static-controls" class="mode-controls active">
+                <button id="btn-detect" class="btn btn-primary">
+                    <i class="fa-solid fa-magnifying-glass"></i> Detect Deadlock
+                </button>
+                <button id="btn-recover-auto" class="btn btn-success">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Auto Recover
+                </button>
+            </div>
+
+            <!-- Sim Controls -->
+            <div id="sim-controls" class="mode-controls">
+                <label for="strategy-select"><i class="fa-solid fa-shield-heart"></i> Recovery Strategy</label>
+                <select id="strategy-select" class="modern-select">
+                    <option value="terminate_one" selected>Terminate One (Cost-based)</option>
+                    <option value="none">Manual / No Auto-Recovery</option>
                     <option value="terminate_all">Terminate All</option>
                     <option value="preemption">Resource Preemption</option>
                 </select>
-                <button id="btn-start" style="width: 100%; margin-bottom: 5px;">Start Simulation</button>
-                <button id="btn-step" style="width: 100%; margin-bottom: 5px;" disabled>Step Tick</button>
-                <button id="btn-auto" style="width: 100%; margin-bottom: 5px;" disabled>Auto-Run / Pause</button>
-            </div>
-            
-            <div id="static-controls">
-                <button id="btn-detect" style="width: 100%; margin-bottom: 5px;">Detect Deadlock</button>
-                <button id="btn-recover-auto" style="width: 100%; margin-bottom: 5px;">Auto Recover</button>
-            </div>
-            
-            <hr>
-            <h4>Manual Victim Selection</h4>
-            <p style="font-size: 0.9em; color: var(--text-muted);">Click a deadlocked process in the graph or select below to manually recover.</p>
-            <select id="victim-select" style="width: 100%; margin-bottom: 5px;"></select>
-            <button id="btn-recover-manual" style="width: 100%;" disabled>Recover Victim</button>
-        </aside>
-        
-        <main>
-            <div id="status-banner" class="banner safe">SAFE</div>
-            
-            <div class="graph-container" id="graph-container">
-                <!-- SVG rendered via D3 or Vanilla JS -->
-                <svg id="rag-svg" style="width: 100%; height: 100%;"></svg>
-            </div>
-            
-            <div class="tables" id="tables-container">
-                <div class="matrix">
-                    <h4>Allocation</h4>
-                    <table id="alloc-table"></table>
+                
+                <div class="action-buttons">
+                    <button id="btn-start" class="btn btn-primary w-100">
+                        <i class="fa-solid fa-play"></i> Start Simulation
+                    </button>
                 </div>
-                <div class="matrix">
-                    <h4>Request</h4>
-                    <table id="req-table"></table>
+                
+                <div class="sim-playback">
+                    <button id="btn-auto" class="btn btn-warning" title="Auto-Play Continuous Simulation">
+                        <i class="fa-solid fa-forward"></i> Auto-Play
+                    </button>
+                    <button id="btn-step" class="btn btn-secondary" title="Step one tick">
+                        <i class="fa-solid fa-forward-step"></i> Step
+                    </button>
                 </div>
-                <div class="matrix">
-                    <h4>Available</h4>
-                    <table id="avail-table"></table>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <div class="control-group">
+                <label><i class="fa-solid fa-user-doctor"></i> Manual Recovery</label>
+                <select id="victim-select" class="modern-select" disabled style="margin-bottom: 10px;">
+                    <option value="">No deadlocked processes</option>
+                </select>
+                <button id="btn-recover-manual" class="btn btn-warning" disabled>
+                    <i class="fa-solid fa-skull"></i> Abort Victim
+                </button>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <div id="status-banner" class="status-banner safe">
+                    <div class="status-icon"><i class="fa-solid fa-check-circle"></i></div>
+                    <div class="status-text">
+                        <span class="status-title">SYSTEM SAFE</span>
+                        <span class="status-desc" id="status-desc">No deadlocks detected in current state.</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="visualization-area">
+                <div class="panel graph-panel">
+                    <div class="panel-header">
+                        <h3>Resource Allocation Graph</h3>
+                        <div class="legend">
+                            <span class="legend-item"><span class="legend-color process-color"></span> Process</span>
+                            <span class="legend-item"><span class="legend-color resource-color"></span> Resource</span>
+                            <span class="legend-item"><span class="legend-color deadlock-color"></span> Deadlocked</span>
+                        </div>
+                    </div>
+                    <div class="graph-container" id="graph-container">
+                        <svg id="rag-svg"></svg>
+                    </div>
+                </div>
+                
+                <div class="panel data-panel">
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="matrices">State Matrices</button>
+                        <button class="tab-btn" data-tab="metrics">Metrics & Logs</button>
+                    </div>
+                    
+                    <div class="tab-content active" id="tab-matrices">
+                        <div class="matrix-grid">
+                            <div class="matrix-box">
+                                <h4>Available Resources</h4>
+                                <table id="avail-table" class="data-table"></table>
+                            </div>
+                            <div class="matrix-box">
+                                <h4>Current Allocation</h4>
+                                <table id="alloc-table" class="data-table"></table>
+                            </div>
+                            <div class="matrix-box">
+                                <h4>Pending Requests</h4>
+                                <table id="req-table" class="data-table"></table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="tab-metrics">
+                        <!-- Dedicated Simulation Toolbar inside Metrics & Logs -->
+                        <div class="sim-toolbar">
+                            <div class="sim-toolbar-buttons">
+                                <button id="tab-btn-start" class="btn btn-primary btn-sm" title="Start / Restart Simulation">
+                                    <i class="fa-solid fa-play"></i> Start
+                                </button>
+                                <button id="tab-btn-auto" class="btn btn-warning btn-sm" title="Auto-Play Simulation">
+                                    <i class="fa-solid fa-forward"></i> Auto-Play
+                                </button>
+                                <button id="tab-btn-step" class="btn btn-secondary btn-sm" title="Advance by 1 Tick">
+                                    <i class="fa-solid fa-forward-step"></i> Step
+                                </button>
+                                <button id="tab-btn-reset" class="btn btn-secondary btn-sm" title="Reset Simulation">
+                                    <i class="fa-solid fa-rotate-left"></i> Reset
+                                </button>
+                            </div>
+                            <div class="speed-box">
+                                <label for="speed-select"><i class="fa-solid fa-gauge-high"></i> Speed:</label>
+                                <select id="speed-select" class="speed-select">
+                                    <option value="1200">0.5x</option>
+                                    <option value="700" selected>1x</option>
+                                    <option value="350">2x</option>
+                                    <option value="150">4x</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="metrics-grid" id="metrics-panel">
+                            <div class="metric-card">
+                                <div class="metric-value" id="val-tick">0</div>
+                                <div class="metric-label">Tick</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="val-status">Ready</div>
+                                <div class="metric-label">Status</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="val-completed">0 / 0</div>
+                                <div class="metric-label">Completed</div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-value" id="val-deadlocks">0</div>
+                                <div class="metric-label">Deadlocks</div>
+                            </div>
+                        </div>
+
+                        <div class="log-header-row">
+                            <h4 class="log-title">Event Trace</h4>
+                            <button id="btn-clear-logs" class="btn-text-sm" title="Clear Event Log">
+                                <i class="fa-solid fa-trash-can"></i> Clear
+                            </button>
+                        </div>
+                        <div id="event-log" class="log-viewer"></div>
+                    </div>
                 </div>
             </div>
         </main>
-        
-        <aside class="right-panel">
-            <h3>Metrics & Trace</h3>
-            <div id="metrics-panel" style="font-size: 0.9em; line-height: 1.5; margin-bottom: 20px;">
-                <!-- Filled dynamically -->
-            </div>
-            <h3>Event Log</h3>
-            <div id="event-log" class="log-box"></div>
-        </aside>
     </div>
-    
-    <script src="theme.js"></script>
-    <script src="graph.js"></script>
-    <script src="app.js"></script>
+
+    <!-- Modals -->
+    <div id="alert-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Notice</h3>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="modal-msg"></p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary close-btn-main">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/theme.js?v=20261005_4"></script>
+    <script src="/static/graph.js?v=20261005_4"></script>
+    <script src="/static/app.js?v=20261005_4"></script>
 </body>
 </html>

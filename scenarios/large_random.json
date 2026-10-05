@@ -1,64 +1,64 @@
 {
   "resources": {
-    "R0": 1,
-    "R1": 1,
+    "R0": 2,
+    "R1": 2,
     "R2": 3,
     "R3": 2,
     "R4": 2,
     "R5": 2,
-    "R6": 1,
-    "R7": 5
+    "R6": 2,
+    "R7": 3
   },
   "processes": [
     {
       "id": 0,
       "name": "P0",
-      "priority": 2
+      "priority": 1
     },
     {
       "id": 1,
       "name": "P1",
-      "priority": 10
+      "priority": 2
     },
     {
       "id": 2,
       "name": "P2",
-      "priority": 7
+      "priority": 3
     },
     {
       "id": 3,
       "name": "P3",
-      "priority": 1
+      "priority": 4
     },
     {
       "id": 4,
       "name": "P4",
-      "priority": 1
+      "priority": 5
     },
     {
       "id": 5,
       "name": "P5",
-      "priority": 2
+      "priority": 1
     },
     {
       "id": 6,
       "name": "P6",
-      "priority": 4
+      "priority": 2
     },
     {
       "id": 7,
       "name": "P7",
-      "priority": 4
+      "priority": 3
     },
     {
       "id": 8,
       "name": "P8",
-      "priority": 9
+      "priority": 4
     },
     {
       "id": 9,
       "name": "P9",
-      "priority": 10
+      "priority": 5
     },
     {
       "id": 10,
@@ -68,55 +68,357 @@
     {
       "id": 11,
       "name": "P11",
-      "priority": 9
+      "priority": 2
     },
     {
       "id": 12,
       "name": "P12",
-      "priority": 4
+      "priority": 3
     },
     {
       "id": 13,
       "name": "P13",
-      "priority": 9
+      "priority": 4
     },
     {
       "id": 14,
       "name": "P14",
-      "priority": 7
+      "priority": 5
     }
+  ],
+  "allocation": [
+    [
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      2,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  ],
+  "request": [
+    [
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  ],
+  "available": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
   ],
   "scripts": {
     "0": [
       {
         "type": "REQUEST",
         "resources": {
-          "R0": 1,
-          "R2": 2,
-          "R4": 2,
-          "R5": 2,
-          "R6": 1
+          "R1": 1
         },
         "ticks": 0
       },
       {
-        "type": "CHECKPOINT",
+        "type": "COMPUTE",
         "resources": {},
-        "ticks": 0
-      },
-      {
-        "type": "CHECKPOINT",
-        "resources": {},
-        "ticks": 0
+        "ticks": 2
       },
       {
         "type": "RELEASE",
         "resources": {
-          "R0": 1,
-          "R2": 2,
-          "R4": 2,
-          "R5": 2,
-          "R6": 1
+          "R0": 2,
+          "R1": 1
         },
         "ticks": 0
       },
@@ -130,24 +432,20 @@
       {
         "type": "REQUEST",
         "resources": {
-          "R7": 3
+          "R2": 1
         },
         "ticks": 0
       },
       {
         "type": "COMPUTE",
         "resources": {},
-        "ticks": 3
-      },
-      {
-        "type": "CHECKPOINT",
-        "resources": {},
-        "ticks": 0
+        "ticks": 2
       },
       {
         "type": "RELEASE",
         "resources": {
-          "R7": 3
+          "R1": 2,
+          "R2": 1
         },
         "ticks": 0
       },
@@ -161,47 +459,7 @@
       {
         "type": "REQUEST",
         "resources": {
-          "R1": 1,
-          "R2": 2,
-          "R3": 1,
-          "R7": 1
-        },
-        "ticks": 0
-      },
-      {
-        "type": "CHECKPOINT",
-        "resources": {},
-        "ticks": 0
-      },
-      {
-        "type": "REQUEST",
-        "resources": {
-          "R0": 1,
-          "R1": 1,
-          "R5": 1
-        },
-        "ticks": 0
-      },
-      {
-        "type": "CHECKPOINT",
-        "resources": {},
-        "ticks": 0
-      },
-      {
-        "type": "REQUEST",
-        "resources": {
-          "R3": 2,
-          "R4": 1,
-          "R6": 1
-        },
-        "ticks": 0
-      },
-      {
-        "type": "REQUEST",
-        "resources": {
-          "R0": 1,
-          "R3": 1,
-          "R5": 2
+          "R3": 1
         },
         "ticks": 0
       },
@@ -211,24 +469,10 @@
         "ticks": 2
       },
       {
-        "type": "REQUEST",
-        "resources": {
-          "R2": 3,
-          "R5": 2
-        },
-        "ticks": 0
-      },
-      {
         "type": "RELEASE",
         "resources": {
-          "R0": 2,
-          "R1": 2,
-          "R2": 5,
-          "R3": 4,
-          "R4": 1,
-          "R5": 5,
-          "R6": 1,
-          "R7": 1
+          "R2": 3,
+          "R3": 1
         },
         "ticks": 0
       },
@@ -240,34 +484,22 @@
     ],
     "3": [
       {
+        "type": "REQUEST",
+        "resources": {
+          "R4": 1
+        },
+        "ticks": 0
+      },
+      {
         "type": "COMPUTE",
         "resources": {},
         "ticks": 2
       },
       {
-        "type": "REQUEST",
-        "resources": {
-          "R2": 2,
-          "R4": 2
-        },
-        "ticks": 0
-      },
-      {
-        "type": "COMPUTE",
-        "resources": {},
-        "ticks": 5
-      },
-      {
         "type": "RELEASE",
         "resources": {
-          "R2": 2
-        },
-        "ticks": 0
-      },
-      {
-        "type": "RELEASE",
-        "resources": {
-          "R4": 2
+          "R3": 2,
+          "R4": 1
         },
         "ticks": 0
       },
@@ -279,43 +511,22 @@
     ],
     "4": [
       {
-        "type": "CHECKPOINT",
-        "resources": {},
-        "ticks": 0
-      },
-      {
-        "type": "COMPUTE",
-        "resources": {},
-        "ticks": 4
-      },
-      {
-        "type": "COMPUTE",
-        "resources": {},
-        "ticks": 5
-      },
-      {
-        "type": "CHECKPOINT",
-        "resources": {},
-        "ticks": 0
-      },
-      {
         "type": "REQUEST",
         "resources": {
-          "R0": 1,
-          "R7": 1
+          "R0": 1
         },
         "ticks": 0
       },
       {
         "type": "COMPUTE",
         "resources": {},
-        "ticks": 5
+        "ticks": 2
       },
       {
         "type": "RELEASE",
         "resources": {
           "R0": 1,
-          "R7": 1
+          "R4": 2
         },
         "ticks": 0
       },
@@ -327,23 +538,10 @@
     ],
     "5": [
       {
-        "type": "COMPUTE",
-        "resources": {},
-        "ticks": 2
-      },
-      {
-        "type": "COMPUTE",
-        "resources": {},
-        "ticks": 1
-      },
-      {
-        "type": "COMPUTE",
-        "resources": {},
-        "ticks": 1
-      },
-      {
-        "type": "CHECKPOINT",
-        "resources": {},
+        "type": "REQUEST",
+        "resources": {
+          "R7": 1
+        },
         "ticks": 0
       },
       {
@@ -352,14 +550,12 @@
         "ticks": 2
       },
       {
-        "type": "COMPUTE",
-        "resources": {},
-        "ticks": 4
-      },
-      {
-        "type": "COMPUTE",
-        "resources": {},
-        "ticks": 2
+        "type": "RELEASE",
+        "resources": {
+          "R5": 1,
+          "R7": 1
+        },
+        "ticks": 0
       },
       {
         "type": "END",
@@ -371,34 +567,9 @@
       {
         "type": "REQUEST",
         "resources": {
-          "R3": 1
+          "R5": 1
         },
         "ticks": 0
-      },
-      {
-        "type": "COMPUTE",
-        "resources": {},
-        "ticks": 1
-      },
-      {
-        "type": "COMPUTE",
-        "resources": {},
-        "ticks": 3
-      },
-      {
-        "type": "CHECKPOINT",
-        "resources": {},
-        "ticks": 0
-      },
-      {
-        "type": "COMPUTE",
-        "resources": {},
-        "ticks": 2
-      },
-      {
-        "type": "COMPUTE",
-        "resources": {},
-        "ticks": 4
       },
       {
         "type": "COMPUTE",
@@ -408,7 +579,8 @@
       {
         "type": "RELEASE",
         "resources": {
-          "R3": 1
+          "R5": 1,
+          "R6": 1
         },
         "ticks": 0
       },
@@ -420,56 +592,14 @@
     ],
     "7": [
       {
-        "type": "REQUEST",
-        "resources": {
-          "R1": 1,
-          "R2": 3,
-          "R7": 4
-        },
-        "ticks": 0
-      },
-      {
-        "type": "REQUEST",
-        "resources": {
-          "R2": 1,
-          "R4": 2,
-          "R5": 2,
-          "R6": 1,
-          "R7": 1
-        },
-        "ticks": 0
-      },
-      {
-        "type": "REQUEST",
-        "resources": {
-          "R2": 3,
-          "R6": 1
-        },
-        "ticks": 0
-      },
-      {
         "type": "COMPUTE",
         "resources": {},
-        "ticks": 1
-      },
-      {
-        "type": "REQUEST",
-        "resources": {
-          "R0": 1,
-          "R4": 1
-        },
-        "ticks": 0
+        "ticks": 2
       },
       {
         "type": "RELEASE",
         "resources": {
-          "R0": 1,
-          "R1": 1,
-          "R2": 7,
-          "R4": 3,
-          "R5": 2,
-          "R6": 2,
-          "R7": 5
+          "R7": 1
         },
         "ticks": 0
       },
@@ -481,40 +611,22 @@
     ],
     "8": [
       {
-        "type": "COMPUTE",
-        "resources": {},
-        "ticks": 3
-      },
-      {
-        "type": "COMPUTE",
-        "resources": {},
-        "ticks": 4
-      },
-      {
-        "type": "COMPUTE",
-        "resources": {},
-        "ticks": 3
-      },
-      {
         "type": "REQUEST",
         "resources": {
-          "R2": 3,
-          "R5": 1,
-          "R7": 3
+          "R6": 1
         },
         "ticks": 0
       },
       {
-        "type": "CHECKPOINT",
+        "type": "COMPUTE",
         "resources": {},
-        "ticks": 0
+        "ticks": 2
       },
       {
         "type": "RELEASE",
         "resources": {
-          "R2": 3,
           "R5": 1,
-          "R7": 3
+          "R6": 1
         },
         "ticks": 0
       },
@@ -531,14 +643,11 @@
         "ticks": 2
       },
       {
-        "type": "COMPUTE",
-        "resources": {},
-        "ticks": 2
-      },
-      {
-        "type": "COMPUTE",
-        "resources": {},
-        "ticks": 1
+        "type": "RELEASE",
+        "resources": {
+          "R6": 1
+        },
+        "ticks": 0
       },
       {
         "type": "END",
@@ -548,70 +657,14 @@
     ],
     "10": [
       {
-        "type": "REQUEST",
-        "resources": {
-          "R0": 1,
-          "R2": 3,
-          "R5": 1,
-          "R6": 1
-        },
-        "ticks": 0
-      },
-      {
         "type": "COMPUTE",
         "resources": {},
-        "ticks": 3
-      },
-      {
-        "type": "CHECKPOINT",
-        "resources": {},
-        "ticks": 0
-      },
-      {
-        "type": "REQUEST",
-        "resources": {
-          "R0": 1,
-          "R3": 1,
-          "R6": 1
-        },
-        "ticks": 0
-      },
-      {
-        "type": "REQUEST",
-        "resources": {
-          "R0": 1,
-          "R1": 1,
-          "R6": 1
-        },
-        "ticks": 0
-      },
-      {
-        "type": "COMPUTE",
-        "resources": {},
-        "ticks": 5
-      },
-      {
-        "type": "CHECKPOINT",
-        "resources": {},
-        "ticks": 0
-      },
-      {
-        "type": "REQUEST",
-        "resources": {
-          "R1": 1,
-          "R6": 1
-        },
-        "ticks": 0
+        "ticks": 2
       },
       {
         "type": "RELEASE",
         "resources": {
-          "R0": 3,
-          "R1": 2,
-          "R2": 3,
-          "R3": 1,
-          "R5": 1,
-          "R6": 4
+          "R7": 1
         },
         "ticks": 0
       },
@@ -623,33 +676,15 @@
     ],
     "11": [
       {
-        "type": "CHECKPOINT",
-        "resources": {},
-        "ticks": 0
-      },
-      {
-        "type": "CHECKPOINT",
-        "resources": {},
-        "ticks": 0
-      },
-      {
-        "type": "CHECKPOINT",
-        "resources": {},
-        "ticks": 0
-      },
-      {
         "type": "COMPUTE",
         "resources": {},
-        "ticks": 1
+        "ticks": 2
       },
       {
-        "type": "COMPUTE",
-        "resources": {},
-        "ticks": 1
-      },
-      {
-        "type": "CHECKPOINT",
-        "resources": {},
+        "type": "RELEASE",
+        "resources": {
+          "R7": 1
+        },
         "ticks": 0
       },
       {
@@ -662,22 +697,7 @@
       {
         "type": "COMPUTE",
         "resources": {},
-        "ticks": 4
-      },
-      {
-        "type": "COMPUTE",
-        "resources": {},
         "ticks": 2
-      },
-      {
-        "type": "COMPUTE",
-        "resources": {},
-        "ticks": 2
-      },
-      {
-        "type": "COMPUTE",
-        "resources": {},
-        "ticks": 3
       },
       {
         "type": "END",
@@ -689,12 +709,7 @@
       {
         "type": "COMPUTE",
         "resources": {},
-        "ticks": 5
-      },
-      {
-        "type": "COMPUTE",
-        "resources": {},
-        "ticks": 5
+        "ticks": 2
       },
       {
         "type": "END",
@@ -706,33 +721,7 @@
       {
         "type": "COMPUTE",
         "resources": {},
-        "ticks": 3
-      },
-      {
-        "type": "COMPUTE",
-        "resources": {},
-        "ticks": 3
-      },
-      {
-        "type": "COMPUTE",
-        "resources": {},
-        "ticks": 5
-      },
-      {
-        "type": "REQUEST",
-        "resources": {
-          "R6": 1,
-          "R7": 5
-        },
-        "ticks": 0
-      },
-      {
-        "type": "RELEASE",
-        "resources": {
-          "R6": 1,
-          "R7": 5
-        },
-        "ticks": 0
+        "ticks": 2
       },
       {
         "type": "END",

@@ -14,48 +14,63 @@
     { "id": 4, "name": "Phil4", "priority": 1 }
   ],
   "allocation": [
-    [1, 0, 0, 0, 0],
-    [0, 1, 0, 0, 0],
-    [0, 0, 1, 0, 0],
-    [0, 0, 0, 1, 0],
-    [0, 0, 0, 0, 1]
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0]
   ],
   "request": [
-    [0, 1, 0, 0, 0],
-    [0, 0, 1, 0, 0],
-    [0, 0, 0, 1, 0],
-    [0, 0, 0, 0, 1],
-    [1, 0, 0, 0, 0]
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0]
   ],
-  "available": [0, 0, 0, 0, 0],
+  "available": [1, 1, 1, 1, 1],
   "scripts": {
     "0": [
+      { "type": "COMPUTE", "ticks": 1 },
+      { "type": "REQUEST", "resources": { "Fork0": 1 } },
+      { "type": "COMPUTE", "ticks": 1 },
       { "type": "REQUEST", "resources": { "Fork1": 1 } },
-      { "type": "COMPUTE", "ticks": 2 },
+      { "type": "COMPUTE", "ticks": 3 },
       { "type": "RELEASE", "resources": { "Fork0": 1, "Fork1": 1 } },
       { "type": "END" }
     ],
     "1": [
+      { "type": "COMPUTE", "ticks": 1 },
+      { "type": "REQUEST", "resources": { "Fork1": 1 } },
+      { "type": "COMPUTE", "ticks": 1 },
       { "type": "REQUEST", "resources": { "Fork2": 1 } },
-      { "type": "COMPUTE", "ticks": 2 },
+      { "type": "COMPUTE", "ticks": 3 },
       { "type": "RELEASE", "resources": { "Fork1": 1, "Fork2": 1 } },
       { "type": "END" }
     ],
     "2": [
+      { "type": "COMPUTE", "ticks": 1 },
+      { "type": "REQUEST", "resources": { "Fork2": 1 } },
+      { "type": "COMPUTE", "ticks": 1 },
       { "type": "REQUEST", "resources": { "Fork3": 1 } },
-      { "type": "COMPUTE", "ticks": 2 },
+      { "type": "COMPUTE", "ticks": 3 },
       { "type": "RELEASE", "resources": { "Fork2": 1, "Fork3": 1 } },
       { "type": "END" }
     ],
     "3": [
+      { "type": "COMPUTE", "ticks": 1 },
+      { "type": "REQUEST", "resources": { "Fork3": 1 } },
+      { "type": "COMPUTE", "ticks": 1 },
       { "type": "REQUEST", "resources": { "Fork4": 1 } },
-      { "type": "COMPUTE", "ticks": 2 },
+      { "type": "COMPUTE", "ticks": 3 },
       { "type": "RELEASE", "resources": { "Fork3": 1, "Fork4": 1 } },
       { "type": "END" }
     ],
     "4": [
+      { "type": "COMPUTE", "ticks": 1 },
+      { "type": "REQUEST", "resources": { "Fork4": 1 } },
+      { "type": "COMPUTE", "ticks": 1 },
       { "type": "REQUEST", "resources": { "Fork0": 1 } },
-      { "type": "COMPUTE", "ticks": 2 },
+      { "type": "COMPUTE", "ticks": 3 },
       { "type": "RELEASE", "resources": { "Fork4": 1, "Fork0": 1 } },
       { "type": "END" }
     ]

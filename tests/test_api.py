@@ -34,3 +34,25 @@ def test_detect_static():
     data = response.json()
     assert data["is_deadlocked"] is True
     assert len(data["deadlocked_pids"]) > 0
+
+def test_simulate_start_and_step():
+    # Test starting simulation on scenario without explicit scripts (synthesized)
+    res1 = client.post("/api/simulate/start", json={"scenario": "cycle_without_deadlock", "strategy": "none"})
+    assert res1.status_code == 200
+    data1 = res1.json()
+    assert "session_id" in data1
+    sid1 = data1["session_id"]
+    
+    # Step simulation
+    step_res = client.post(f"/api/simulate/step/{sid1}")
+    assert step_res.status_code == 200
+    step_data = step_res.json()
+    assert step_data["tick"] == 1
+    assert "metrics" in step_data
+    assert "logs" in step_data
+
+    # Test starting simulation on scenario with explicit scripts
+    res2 = client.post("/api/simulate/start", json={"scenario": "two_process_sim", "strategy": "terminate_one"})
+    assert res2.status_code == 200
+    assert "session_id" in res2.json()
+

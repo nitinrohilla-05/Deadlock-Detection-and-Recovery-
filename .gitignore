@@ -6,3 +6,4 @@ __pycache__/
 htmlcov/
 docs/screenshots/
 test_env/
+.target-transfer/

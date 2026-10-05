@@ -4,7 +4,7 @@ import uuid
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import Optional, Any
-from engine.scenario import load_scenario, scenario_to_state, Scenario
+from engine.scenario import load_scenario, scenario_to_state, Scenario, synthesize_scripts
 from engine.simulator import Simulator
 from engine.detection import detect_deadlock
 from engine.recovery import TerminateAll, TerminateOneAtATime, ResourcePreemption
@@ -50,8 +50,19 @@ def state_from_payload(payload: StatePayload) -> SystemState:
 
 @router.get("/scenarios")
 def list_scenarios():
-    files = [f for f in os.listdir("scenarios") if f.endswith(".json")]
-    return {"scenarios": [f.replace(".json", "") for f in files]}
+    files = sorted([f for f in os.listdir("scenarios") if f.endswith(".json")])
+    details = []
+    for f in files:
+        name = f.replace(".json", "")
+        has_scripts = False
+        try:
+            with open(f"scenarios/{f}", "r", encoding="utf-8") as fp:
+                data = json.load(fp)
+                has_scripts = bool(data.get("scripts"))
+        except Exception:
+            pass
+        details.append({"name": name, "has_scripts": has_scripts})
+    return {"scenarios": [item["name"] for item in details], "details": details}
 
 @router.get("/scenarios/{name}")
 def get_scenario(name: str):
@@ -109,11 +120,12 @@ def start_simulation(payload: SimulateStartPayload):
         raise HTTPException(status_code=404, detail=str(e))
         
     state = scenario_to_state(sc)
-    if not sc.scripts:
-        raise HTTPException(status_code=400, detail="Scenario has no scripts")
+    scripts = sc.scripts
+    if not scripts:
+        scripts = synthesize_scripts(sc)
         
     strat = get_strategy(payload.strategy)
-    sim = Simulator(state, sc.scripts, trigger_config=payload.trigger_config, recovery_strategy=strat)
+    sim = Simulator(state, scripts, trigger_config=payload.trigger_config, recovery_strategy=strat)
     
     session_id = str(uuid.uuid4())
     sessions[session_id] = sim

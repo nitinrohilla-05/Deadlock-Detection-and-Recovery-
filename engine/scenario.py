@@ -119,3 +119,49 @@ def generate_random_scenario(
         scripts[i] = script
         
     return Scenario(resources=resources, processes=processes, scripts=scripts)
+
+def synthesize_scripts(scenario: Scenario) -> dict[int, list[Instruction]]:
+    """Synthesizes execution scripts for scenarios that do not define them explicitly.
+    Allows static scenarios (like textbook_deadlock, cycle_without_deadlock) to be
+    simulated seamlessly in tick-based simulation.
+    """
+    res_names = list(scenario.resources.keys())
+    scripts: dict[int, list[Instruction]] = {}
+    
+    for i, p in enumerate(scenario.processes):
+        pid = p["id"]
+        insts: list[Instruction] = []
+        
+        held: dict[str, int] = {}
+        if scenario.allocation and i < len(scenario.allocation):
+            for j, r_name in enumerate(res_names):
+                qty = scenario.allocation[i][j]
+                if qty > 0:
+                    held[r_name] = qty
+                    
+        reqs: dict[str, int] = {}
+        if scenario.request and i < len(scenario.request):
+            for j, r_name in enumerate(res_names):
+                qty = scenario.request[i][j]
+                if qty > 0:
+                    reqs[r_name] = qty
+                    
+        if reqs:
+            insts.append(Instruction(type="REQUEST", resources=reqs))
+            
+        insts.append(Instruction(type="COMPUTE", ticks=1))
+        
+        total_to_release: dict[str, int] = {}
+        for r_name, q in held.items():
+            total_to_release[r_name] = total_to_release.get(r_name, 0) + q
+        for r_name, q in reqs.items():
+            total_to_release[r_name] = total_to_release.get(r_name, 0) + q
+            
+        if total_to_release:
+            insts.append(Instruction(type="RELEASE", resources=total_to_release))
+            
+        insts.append(Instruction(type="END"))
+        scripts[pid] = insts
+        
+    return scripts
+

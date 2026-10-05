@@ -4,65 +4,46 @@
     "R2": 2
   },
   "processes": [
-    {
-      "id": 0,
-      "name": "P0",
-      "priority": 1
-    },
-    {
-      "id": 1,
-      "name": "P1",
-      "priority": 1
-    },
-    {
-      "id": 2,
-      "name": "P2",
-      "priority": 1
-    },
-    {
-      "id": 3,
-      "name": "P3",
-      "priority": 1
-    }
+    { "id": 0, "name": "P0", "priority": 1 },
+    { "id": 1, "name": "P1", "priority": 1 },
+    { "id": 2, "name": "P2", "priority": 1 },
+    { "id": 3, "name": "P3", "priority": 1 }
   ],
   "allocation": [
-    [
-      0,
-      1
-    ],
-    [
-      1,
-      0
-    ],
-    [
-      1,
-      0
-    ],
-    [
-      0,
-      1
-    ]
+    [0, 1],
+    [1, 0],
+    [1, 0],
+    [0, 1]
   ],
   "request": [
-    [
-      1,
-      0
-    ],
-    [
-      0,
-      0
-    ],
-    [
-      0,
-      1
-    ],
-    [
-      0,
-      0
-    ]
+    [1, 0],
+    [0, 0],
+    [0, 1],
+    [0, 0]
   ],
-  "available": [
-    0,
-    0
-  ]
+  "available": [0, 0],
+  "scripts": {
+    "0": [
+      { "type": "REQUEST", "resources": { "R1": 1 } },
+      { "type": "COMPUTE", "ticks": 2 },
+      { "type": "RELEASE", "resources": { "R1": 1, "R2": 1 } },
+      { "type": "END" }
+    ],
+    "1": [
+      { "type": "COMPUTE", "ticks": 2 },
+      { "type": "RELEASE", "resources": { "R1": 1 } },
+      { "type": "END" }
+    ],
+    "2": [
+      { "type": "REQUEST", "resources": { "R2": 1 } },
+      { "type": "COMPUTE", "ticks": 2 },
+      { "type": "RELEASE", "resources": { "R1": 1, "R2": 1 } },
+      { "type": "END" }
+    ],
+    "3": [
+      { "type": "COMPUTE", "ticks": 2 },
+      { "type": "RELEASE", "resources": { "R2": 1 } },
+      { "type": "END" }
+    ]
+  }
 }

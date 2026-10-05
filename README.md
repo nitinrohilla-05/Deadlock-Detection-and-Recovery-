@@ -48,6 +48,8 @@ pytest --cov=engine --cov-fail-under=90 tests/
 ```
 
 ## Documentation
+- [How to Build from Scratch (Procedure Guide)](PROCEDURE.md)
+- [Comprehensive File Purpose Directory](FILE_PURPOSE.md)
 - [Design Report](docs/REPORT.md)
 - [Viva Q&A](docs/VIVA.md)
 - [Demo Script](docs/DEMO.md)

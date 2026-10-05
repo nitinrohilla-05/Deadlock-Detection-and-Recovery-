@@ -1,0 +1,39 @@
+{
+  "resources": {
+    "R0": 1,
+    "R1": 1
+  },
+  "processes": [
+    { "id": 0, "name": "P0", "priority": 1 },
+    { "id": 1, "name": "P1", "priority": 1 }
+  ],
+  "allocation": [
+    [0, 0],
+    [0, 0]
+  ],
+  "request": [
+    [0, 0],
+    [0, 0]
+  ],
+  "available": [1, 1],
+  "scripts": {
+    "0": [
+      { "type": "COMPUTE", "ticks": 1 },
+      { "type": "REQUEST", "resources": { "R0": 1 } },
+      { "type": "COMPUTE", "ticks": 2 },
+      { "type": "REQUEST", "resources": { "R1": 1 } },
+      { "type": "COMPUTE", "ticks": 3 },
+      { "type": "RELEASE", "resources": { "R0": 1, "R1": 1 } },
+      { "type": "END" }
+    ],
+    "1": [
+      { "type": "COMPUTE", "ticks": 1 },
+      { "type": "REQUEST", "resources": { "R1": 1 } },
+      { "type": "COMPUTE", "ticks": 2 },
+      { "type": "REQUEST", "resources": { "R0": 1 } },
+      { "type": "COMPUTE", "ticks": 3 },
+      { "type": "RELEASE", "resources": { "R1": 1, "R0": 1 } },
+      { "type": "END" }
+    ]
+  }
+}
