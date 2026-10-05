@@ -48,7 +48,6 @@
 * [9. RESTful API Specification](#-9-restful-api-specification)
 * [10. Formal Verification & Test Suite](#-10-formal-verification--test-suite)
 * [11. Repository Architecture & File Directory](#-11-repository-architecture--file-directory)
-* [12. Academic References & Citations](#-12-academic-references--citations)
 
 ---
 
@@ -454,15 +453,6 @@ Deadlock-Detection-and-Recovery-/
 ├── FILE_PURPOSE.md            # Comprehensive file-by-file purpose guide
 └── README.md                  # Master documentation (this file)
 ```
-
----
-
-## 📚 12. Academic References & Citations
-
-1. **Silberschatz, A., Galvin, P. B., & Gagne, G.** (2018). *Operating System Concepts* (10th ed.). John Wiley & Sons. (Chapter 8: Deadlocks).
-2. **Tarjan, R. E.** (1972). *Depth-First Search and Linear Graph Algorithms*. SIAM Journal on Computing, 1(2), 146–160.
-3. **Coffman, E. G., Elphick, M., & Shoshani, A.** (1971). *System Deadlocks*. ACM Computing Surveys (CSUR), 3(2), 67–78.
-4. **Dijkstra, E. W.** (1968). *Cooperating Sequential Processes*. Technological University, Eindhoven, The Netherlands.
 
 ---
 
