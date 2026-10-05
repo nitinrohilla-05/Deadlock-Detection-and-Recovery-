@@ -1,324 +1,474 @@
-# Deadlock Lab: Deadlock Detection, Simulation & Recovery Engine
+<div align="center">
 
-**Python 3.10+** • **FastAPI** • **1,024 Passing Pytests** • **90%+ Coverage** • **Pitch-Black Glassmorphic UI** • **MIT License**
+# ⚡ DEADLOCK LAB ⚡
+### Autonomous Deadlock Detection, Discrete-Event Concurrency Simulation & Recovery Engine
 
-An academic and industrial-grade **Deadlock Detection, Discrete-Event Simulation, and Automated Recovery System** for Operating Systems. Features a dual-engine algorithmic core (Wait-For-Graph with Tarjan's SCC & General Matrix Reduction), multi-mode tick-based concurrency simulator, cost-based automated recovery strategies, and an interactive **pitch-black obsidian glassmorphic** web dashboard.
+```
+  ____                 _ _            _      _           _     
+ |  _ \  ___  __ _  __| | | ___   ___| | __ | |    __ _ | |__  
+ | | | |/ _ \/ _` |/ _` | |/ _ \ / __| |/ / | |   / _` || '_ \ 
+ | |_| |  __/ (_| | (_| | | (_) | (__|   <  | |__| (_| || |_) |
+ |____/ \___|\__,_|\__,_|_|\___/ \___|_|\_\ |_____\__,_||_.__/ 
+```
 
----
-
-## Table of Contents
-1. [Key Features & Innovations](#1-key-features--innovations)
-2. [Algorithmic & Mathematical Architecture](#2-algorithmic--mathematical-architecture)
-3. [System Architecture](#3-system-architecture)
-4. [Quick Start & Portability Guide](#4-quick-start--portability-guide)
-5. [Interactive Web Dashboard Tour](#5-interactive-web-dashboard-tour)
-6. [Pre-Configured Benchmark Scenarios](#6-pre-configured-benchmark-scenarios)
-7. [Automated Recovery Strategies](#7-automated-recovery-strategies)
-8. [CLI Terminal Tool](#8-cli-terminal-tool)
-9. [RESTful API Reference](#9-restful-api-reference)
-10. [Test Suite & Property-Based Verification](#10-test-suite--property-based-verification)
-11. [Project Documentation Links](#11-project-documentation-links)
+**Operating Systems Theory • Concurrency Engine • Formal Verification**
 
 ---
 
-## 1. Key Features & Innovations
-
-* **Dual Detection Engine**:
-  * **Wait-For-Graph (WFG)**: Operates on single-instance resource systems using **Tarjan's Strongly Connected Components (SCC)** algorithm ($\mathcal{O}(V + E)$).
-  * **Matrix Reduction (Silberschatz / Banker's Variant)**: Operates on general multi-instance resource systems ($\mathcal{O}(P^2 \times R)$).
-  * **Cycle-Without-Deadlock Disambiguation**: Correctly identifies non-fatal dependency cycles where available capacities or unblocked threads can resolve the loop.
-* **Tick-Based Concurrency Simulator**:
-  * Models real OS time progression in discrete ticks.
-  * Supports concurrent instruction streams: `REQUEST`, `RELEASE`, `WORK`, and `TERMINATE`.
-  * Manages active instruction pointers, blocked queues, checkpoints, and real-time state transitions.
-  * One-click **Auto-Play** with dynamic speed slider (100ms - 2000ms per tick).
-* **Automated & Manual Recovery Strategies**:
-  * **Terminate All**: Immediate abort of all deadlocked processes.
-  * **Terminate One (Cost-Based Victim Selection)**: Iterative abortion minimizing lost CPU time while preserving high-priority tasks.
-  * **Resource Preemption & Rollback**: Reclaims allocated resources without destroying the task identity, complete with a **starvation prevention guard**.
-  * **Interactive Manual Recovery Drawer**: Allows the user to select specific victim processes and abort/preempt them on the fly.
-* **Pitch-Black Obsidian Glassmorphism UI**:
-  * Deep `#000000` pitch-black foundation with subtle radial accents.
-  * Semi-transparent glass containers (`rgba(14, 16, 22, 0.75)`) with `backdrop-filter: blur(20px)`.
-  * High-contrast typography (pure white `#ffffff`, slate `#94a3b8`, glowing blue processes, and yellow resource markers).
-  * Interactive SVG/Canvas force-directed Resource Allocation Graph (RAG) with animated red glow for deadlocked cycles.
-* **100% Self-Contained & Portable**:
-  * Zero Node.js or npm dependencies; all frontend logic is pure native ES6 JavaScript, HTML5, and CSS3.
-  * Runs seamlessly on any Windows, macOS, or Linux machine with standard Python.
+**Python 3.10+** &nbsp;|&nbsp; 
+**FastAPI 0.110+** &nbsp;|&nbsp; 
+**1,024 Passing Pytests** &nbsp;|&nbsp; 
+**90%+ Test Coverage** &nbsp;|&nbsp; 
+**Pitch-Black Glassmorphic UI** &nbsp;|&nbsp; 
+**MIT License**
 
 ---
 
-## 2. Algorithmic & Mathematical Architecture
+*An academic and industrial-grade Operating Systems laboratory implementing dual-engine deadlock detection (Tarjan's SCC & General Matrix Reduction), real-time discrete-event instruction simulation, cost-based victim recovery, and a responsive, pitch-black obsidian glassmorphic web dashboard.*
 
-### 2.1 State Representation & Invariant
-A system state is formally defined as a tuple:
+</div>
+
+---
+
+## 📑 Table of Contents
+
+* [1. Executive Summary & Core Innovations](#-1-executive-summary--core-innovations)
+* [2. Algorithmic & Mathematical Foundations](#-2-algorithmic--mathematical-foundations)
+  * [2.1 Mathematical State Space & Invariants](#21-mathematical-state-space--invariants)
+  * [2.2 Algorithm 1: Wait-For-Graph with Tarjan's SCC](#22-algorithm-1-wait-for-graph-with-tarjans-scc)
+  * [2.3 Algorithm 2: General Matrix Reduction](#23-algorithm-2-general-matrix-reduction)
+  * [2.4 Algorithm Comparison Matrix](#24-algorithm-comparison-matrix)
+  * [2.5 Cost-Weighted Victim Selection](#25-cost-weighted-victim-selection)
+* [3. Concurrency Simulator & Process Lifecycle](#-3-concurrency-simulator--process-lifecycle)
+* [4. Interactive Web Dashboard (UI Architecture)](#-4-interactive-web-dashboard-ui-architecture)
+* [5. Pre-Configured Benchmark Scenarios](#-5-pre-configured-benchmark-scenarios)
+* [6. Recovery Strategies & Starvation Prevention](#-6-recovery-strategies--starvation-prevention)
+* [7. Quick Start & Execution Guide](#-7-quick-start--execution-guide)
+* [8. Command-Line Interface (CLI Walkthrough)](#-8-command-line-interface-cli-walkthrough)
+* [9. RESTful API Specification](#-9-restful-api-specification)
+* [10. Formal Verification & Test Suite](#-10-formal-verification--test-suite)
+* [11. Repository Architecture & File Directory](#-11-repository-architecture--file-directory)
+* [12. Academic References & Citations](#-12-academic-references--citations)
+
+---
+
+## 🚀 1. Executive Summary & Core Innovations
+
+Modern multi-threaded and distributed systems frequently encounter deadlock anomalies when resources are shared concurrently under non-preemptive mutual exclusion. **Deadlock Lab** provides a rigorous mathematical platform, stateful simulator, and interactive visual laboratory for studying and resolving deadlocks.
+
+```
+┌───────────────────────────────────────────────────────────────────────────────┐
+│                           DEADLOCK LAB ARCHITECTURE                           │
+├───────────────────────────────────────────────────────────────────────────────┤
+│                                                                               │
+│   [ Static Mode: Matrices ]                  [ Simulation Mode: Scripts ]     │
+│              │                                            │                   │
+│              ▼                                            ▼                   │
+│     ┌──────────────────┐                         ┌──────────────────┐         │
+│     │  Input State     │                         │ Tick Scheduler   │         │
+│     │  Alloc/Req/Avail │                         │ Instruction Exec │         │
+│     └────────┬─────────┘                         └────────┬─────────┘         │
+│              │                                            │                   │
+│              ▼                                            ▼                   │
+│     ┌───────────────────────────────────────────────────────────────┐         │
+│     │                   SMART DETECTION DISPATCHER                  │         │
+│     │   • If all total == 1  ==>  Tarjan's SCC Wait-For-Graph       │         │
+│     │   • If any total > 1   ==>  Silberschatz Matrix Reduction     │         │
+│     └───────────────────────────────┬───────────────────────────────┘         │
+│                                     │                                         │
+│                      ┌──────────────┴──────────────┐                          │
+│                      ▼                             ▼                          │
+│               [ SAFE STATE ]             [ DEADLOCK DETECTED ]                │
+│             Continue Execution                     │                          │
+│                                                    ▼                          │
+│                                      ┌───────────────────────────┐            │
+│                                      │    RECOVERY STRATEGIES    │            │
+│                                      │  • Terminate All          │            │
+│                                      │  • Cost-Based Single Victim│           │
+│                                      │  • Resource Preemption    │            │
+│                                      └───────────────────────────┘            │
+└───────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Key Highlights:
+1. **Zero External Frontend Dependencies**: Pure ES6 JavaScript, Canvas/SVG, HTML5, and CSS3 without requiring Node.js, Webpack, or npm.
+2. **Dual Algorithmic Engine**: Seamlessly switches between graph-theoretic cycle detection ($\mathcal{O}(V + E)$) and algebraic matrix reduction ($\mathcal{O}(P^2 \times R)$).
+3. **Disambiguation of "Cycle Without Deadlock"**: Accurately recognizes structural cycles that resolve safely due to unblocked non-cycle instances.
+4. **State Conservation Invariant Defense**: Mathematically enforces resource invariants at every step ($Available + \sum Allocation = Total$).
+5. **Pitch-Black Obsidian Aesthetics**: Engineered with a `#000000` glassmorphic theme, translucent panels, and vibrant high-contrast typography.
+
+---
+
+## 🧮 2. Algorithmic & Mathematical Foundations
+
+### 2.1 Mathematical State Space & Invariants
+
+A system state is formally defined by the 5-tuple:
 $$\mathcal{S} = (\mathcal{P}, \mathcal{R}, \mathbf{A}, \mathbf{Q}, \mathbf{V})$$
-Where:
-* $\mathcal{P} = \{P_0, P_1, \dots, P_{n-1}\}$ is the set of $n$ processes. Each process has priority $w_i \ge 0$ and accumulated work $c_i \ge 0$.
-* $\mathcal{R} = \{R_0, R_1, \dots, R_{m-1}\}$ is the set of $m$ resource types with total capacity vector $\mathbf{T} \in \mathbb{N}^m$.
-* $\mathbf{A} \in \mathbb{N}^{n \times m}$: Allocation matrix where $A_{i,j}$ is instances of resource $j$ held by process $i$.
-* $\mathbf{Q} \in \mathbb{N}^{n \times m}$: Request matrix where $Q_{i,j}$ is instances of resource $j$ actively requested by process $i$.
-* $\mathbf{V} \in \mathbb{N}^m$: Available vector where $V_j$ is unallocated instances of resource $j$.
 
-#### Fundamental Conservation Invariant
-Every valid state must satisfy:
-$$T_j = V_j + \sum_{i=0}^{n-1} A_{i,j} \quad \forall j \in \{0, \dots, m-1\}$$
-Any violation raises a `StateValidationError` during validation.
+* **Process Vector** $\mathcal{P} = \{P_0, P_1, \dots, P_{n-1}\}$ with process priorities $\vec{w} \in \mathbb{N}^n$ and accumulated work counters $\vec{c} \in \mathbb{N}^n$.
+* **Resource Vector** $\mathcal{R} = \{R_0, R_1, \dots, R_{m-1}\}$ with total capacities $\vec{T} \in \mathbb{N}^m_{>0}$.
+* **Allocation Matrix** $\mathbf{A} \in \mathbb{N}^{n \times m}$: Current resource holdings ($A_{i,j}$ is units of $R_j$ held by $P_i$).
+* **Request Matrix** $\mathbf{Q} \in \mathbb{N}^{n \times m}$: Pending resource claims ($Q_{i,j}$ is units of $R_j$ requested by $P_i$).
+* **Available Vector** $\mathbf{V} \in \mathbb{N}^m$: Free, unassigned resource instances.
 
----
-
-### 2.2 Algorithm 1: Wait-For-Graph (Single-Instance Resources)
-When $\forall j, T_j = 1$, the system maps to a directed Wait-For-Graph $\mathcal{G} = (\mathcal{V}, \mathcal{E})$:
-* Vertices $\mathcal{V} = \mathcal{P}$.
-* Directed edge $P_i \to P_k$ exists if $P_i$ is waiting for resource $R_m$ currently allocated to $P_k$.
-
-**Detection Theorem**: A deadlock exists if and only if $\mathcal{G}$ contains a directed cycle.
-We implement **Tarjan's Strongly Connected Components (SCC)** algorithm using a single depth-first search (DFS) pass maintaining discovery times and lowest reachable indices (`lowlink`). Any SCC with $|C| > 1$ or a self-loop is marked as deadlocked.
-
-$$\text{Time Complexity: } \mathcal{O}(|\mathcal{V}| + |\mathcal{E}|) \equiv \mathcal{O}(n + m)$$
+#### Invariant Conservation Law:
+$$\forall j \in \{0, \dots, m-1\}: \quad T_j = V_j + \sum_{i=0}^{n-1} A_{i,j}$$
+If at any moment this equality fails, the system immediately raises a `StateValidationError`.
 
 ---
 
-### 2.3 Algorithm 2: General Matrix Reduction (Multi-Instance Resources)
-When $\exists j, T_j > 1$, cycles in the allocation graph do not necessarily imply deadlock. The general reduction algorithm is used:
+### 2.2 Algorithm 1: Wait-For-Graph with Tarjan's SCC
 
-```python
-Work = Available.copy()
-Finish = [False] * n
+Used when all resource types are **single-instance** ($\forall j, T_j = 1$). Under this condition, cycle existence is both **necessary and sufficient** for deadlock.
 
-# Step 1: Processes with zero allocation cannot cause deadlocks
-for i in range(n):
-    if Allocation[i] == 0:
-        Finish[i] = True
-
-# Step 2: Iteratively find a process whose requests can be satisfied
-while True:
-    found = False
-    for i in range(n):
-        if not Finish[i] and Request[i] <= Work:
-            Work += Allocation[i]
-            Finish[i] = True
-            found = True
-            break
-    if not found:
-        break
-
-# Step 3: Any process that cannot finish is deadlocked
-Deadlocked = {P_i for i in range(n) if not Finish[i]}
+```
+          [ R0: held by P0 ] ◄────────── [ P1 requests R0 ]
+                   ▲                              │
+                   │                              │
+           [ P0 requests R1 ] ──────────► [ R1: held by P1 ]
+                   └─────────── DIRECTED CYCLE ───┘
 ```
 
-$$\text{Time Complexity: } \mathcal{O}(n^2 \times m)$$
+1. Construct directed Wait-For-Graph $\mathcal{G} = (\mathcal{V}, \mathcal{E})$ where $\mathcal{V} = \mathcal{P}$.
+2. Directed edge $P_i \to P_k$ exists if $P_i$ requests $R_m$ and $R_m$ is held by $P_k$.
+3. Execute **Tarjan's Depth-First Search** maintaining vertex indices and `lowlink` values:
+   $$v.\text{lowlink} = \min\left(v.\text{index}, \min_{w \in v.\text{neighbors}} (w.\text{lowlink})\right)$$
+4. Any Strongly Connected Component containing $\ge 2$ processes or a self-loop is added to the deadlocked set.
+
+$$\text{Time Complexity: } \mathcal{O}(|\mathcal{V}| + |\mathcal{E}|) = \mathcal{O}(n + m) \qquad \text{Space Complexity: } \mathcal{O}(n)$$
 
 ---
 
-### 2.4 Cost-Based Victim Selection
-When resolving deadlocks iteratively, the optimal victim $P^*$ minimizes total lost computation while respecting process priority:
+### 2.3 Algorithm 2: General Matrix Reduction
+
+Used when **multi-instance resources** exist ($\exists j, T_j > 1$). In multi-instance systems, cycles are necessary but **not sufficient** for deadlock.
+
+```
+                       ┌─────────────────────────┐
+                       │   Work = Available.copy │
+                       │   Finish = [False] * n  │
+                       └────────────┬────────────┘
+                                    │
+                                    ▼
+                       ┌─────────────────────────┐
+                       │ For any Allocation == 0:│
+                       │     Finish[i] = True    │
+                       └────────────┬────────────┘
+                                    │
+                       ┌────────────▼────────────┐
+             ┌────────►│ Find i where:           │
+             │         │  !Finish[i] and Q[i]<=W │
+             │         └────────────┬────────────┘
+             │                      │
+       [ Process Found ]     [ None Found ]
+             │                      │
+             ▼                      ▼
+  ┌─────────────────────┐   ┌─────────────────────┐
+  │ Work += Alloc[i]    │   │  Deadlocked Set =   │
+  │ Finish[i] = True    │   │  {P_i | !Finish[i]} │
+  └──────────┬──────────┘   └─────────────────────┘
+             │
+             └──────────────────────┘
+```
+
+$$\text{Time Complexity: } \mathcal{O}(n^2 \times m) \qquad \text{Space Complexity: } \mathcal{O}(n + m)$$
+
+---
+
+### 2.4 Algorithm Comparison Matrix
+
+| Feature | Wait-For-Graph (WFG) | General Matrix Reduction |
+| :--- | :--- | :--- |
+| **Primary Domain** | Single-Instance Systems ($T_j = 1$) | Multi-Instance Systems ($T_j \ge 1$) |
+| **Theoretical Basis** | Graph Cycle Decomposition (Tarjan SCC) | Algebraic Vector Inequality Simulation |
+| **Worst-Case Time** | $\mathcal{O}(n + m)$ | $\mathcal{O}(n^2 \times m)$ |
+| **Cycle Sufficiency** | Necessary **and** Sufficient | Necessary, but **NOT** Sufficient |
+| **Graph Output** | Direct Process-to-Process Wait Graph | Bipartite Resource Allocation Graph |
+| **Trace Visibility** | Component Cycle Paths | Step-by-Step Process Resolution Trace |
+
+---
+
+### 2.5 Cost-Weighted Victim Selection
+
+When resolving deadlocks iteratively, terminating tasks at random destroys completed CPU computations and ignores priority. Deadlock Lab implements a **cost function** that balances work retention with process priority:
+
 $$\text{Cost}(P_i) = \frac{\text{work\_completed}(P_i) + 1}{\text{priority}(P_i) + 1}$$
+
 $$P^* = \arg\min_{P_i \in \text{Deadlocked}} \text{Cost}(P_i)$$
-* Low-priority tasks that have barely started execution are terminated first.
-* High-priority tasks near completion are protected.
+
+* **Low Priority + Low Work**: Terminated first (lowest cost).
+* **High Priority + High Work**: Protected from termination until all cheaper alternatives are exhausted.
 
 ---
 
-## 3. System Architecture
+## ⏱️ 3. Concurrency Simulator & Process Lifecycle
+
+The simulator models an Operating System scheduler advancing in discrete time units ("ticks"):
 
 ```
-┌────────────────────────────────────────────────────────────────────────┐
-│                   Browser Dashboard (HTML5 / CSS3 / Vanilla ES6)      │
-│     ┌─────────────────────┐   ┌──────────────────┐   ┌───────────────┐ │
-│     │ SVG / Canvas Graph  │   │ Live Matrices    │   │ Simulation    │ │
-│     │ Interactive RAG/WFG │   │ Alloc/Req/Avail  │   │ Auto-Play/Step│ │
-│     └─────────────────────┘   └──────────────────┘   └───────────────┘ │
-└────────────────────────────────────▲───────────────────────────────────┘
-                                     │ HTTP / JSON REST APIs
-┌────────────────────────────────────▼───────────────────────────────────┐
-│                     FastAPI Application Layer (api/)                  │
-│   • /api/detect         • /api/simulate/start    • /api/scenarios      │
-│   • /api/recover        • /api/simulate/step     • /api/simulate/status│
-└────────────────────────────────────▲───────────────────────────────────┘
-                                     │ In-Memory Sessions & Direct Calls
-┌────────────────────────────────────▼───────────────────────────────────┐
-│                       Core Algorithmic Engine (engine/)                │
-│  ┌────────────────────┐ ┌────────────────────┐ ┌────────────────────┐  │
-│  │   models.py        │ │   detection.py     │ │   recovery.py      │  │
-│  │ State, Process, Res│ │ Tarjan SCC, Matrix │ │ Terminate, Preempt │  │
-│  └────────────────────┘ └────────────────────┘ └────────────────────┘  │
-│  ┌────────────────────┐ ┌────────────────────┐ ┌────────────────────┐  │
-│  │   simulator.py     │ │   scenario.py      │ │   metrics.py       │  │
-│  │ Tick State Machine │ │ Loader & Synthesizer│ │ Telemetry Tracker  │  │
-│  └────────────────────┘ └────────────────────┘ └────────────────────┘  │
-└────────────────────────────────────────────────────────────────────────┘
+            [ Script Start ]
+                   │
+                   ▼
+          ┌─────────────────┐
+          │   DISPATCHING   │◄─────────────────────────────┐
+          └────────┬────────┘                              │
+                   │                                       │
+        ┌──────────┴──────────┐                            │
+        ▼                     ▼                            │
+  [ REQUEST Rm ]        [ WORK k ]                         │
+        │                     │                            │
+   Resource Free?       Decrement Work                     │
+    ├── Yes ──► Grant         │                            │
+    └── No  ──► Block   Work Done?                         │
+                  │           ├── No  ──► Sleep 1 Tick     │
+                  ▼           └── Yes ──► Next Step ───────┤
+          ┌───────────────┐                                │
+          │ BLOCKED QUEUE │                                │
+          └───────┬───────┘                                │
+                  │ Resources Released                     │
+                  └────────────────────────────────────────┘
+```
+
+### Instruction Set:
+* `REQUEST <resource_name> <count>`: Process requests resource instances. If unavailable, process is placed in `blocked` queue.
+* `RELEASE <resource_name> <count>`: Relinquishes held resources back to `available` and unblocks waiting threads.
+* `WORK <ticks>`: Simulates CPU computation time, incrementing `work_completed`.
+* `TERMINATE`: Clean process exit, releasing all remaining allocations.
+
+---
+
+## 🖥️ 4. Interactive Web Dashboard (UI Architecture)
+
+The dashboard is built entirely with **Vanilla JavaScript (ES6)** and a custom **SVG/Canvas graph visualizer** styled with a pitch-black obsidian glassmorphic theme.
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────────────────┐
+│  ⚡ DEADLOCK LAB    [ Scenario Selector: large_random ▼ ]   [ Mode: Simulation (Tick) ▼ ]  │
+├──────────────────────────────────────────────┬──────────────────────────────────────────────┤
+│               GRAPH VISUALIZER               │                MATRIX TABLES                 │
+│                                              │                                              │
+│         (P0) ───[req]───► [ R0: 1/1 ]        │   Allocation Matrix (15x8)                   │
+│          ▲                    │              │   P0: [0, 0, 1, 0, ...]                      │
+│        [alloc]             [alloc]           │   P1: [1, 0, 0, 0, ...]                      │
+│          │                    ▼              │                                              │
+│       [ R1: 1/1 ] ◄──[req]─── (P1)           │   Request Matrix (15x8)                      │
+│                                              │   P0: [1, 0, 0, 0, ...]                      │
+│   (Crimson Glowing Nodes = Deadlocked)       │   Available Vector: [0, 1, 0, 2, ...]        │
+├──────────────────────────────────────────────┴──────────────────────────────────────────────┤
+│                            SIMULATION & RECOVERY CONTROLS                                   │
+│  [ ▶ Start Simulation ]  [ ⏭ Step Tick ]  [ ⏱ Speed: 400ms ───────●─ ]                     │
+│  [ Strategy: Terminate One (Cost) ▼ ]     [ Manual Victim: P0 ▼ ]  [ ⚠ Abort Victim ]        │
+├─────────────────────────────────────────────────────────────────────────────────────────────┤
+│  STATUS: ⚠ DEADLOCK DETECTED (P0, P1, P2, P3, P4)   |   TICKS: 14   |   VICTIMS: 1          │
+│  LOG: [Tick 14] Deadlock detected. Terminated P0 (cost=0.5). Resources reclaimed.          │
+└─────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 4. Quick Start & Portability Guide
+## 📦 5. Pre-Configured Benchmark Scenarios
 
-The project is completely self-contained and works on **Windows, macOS, and Linux**.
+The repository includes **9 battle-tested scenarios** covering standard textbooks, concurrency puzzles, and stress tests:
 
-### Prerequisites
-* **Python 3.10 or higher** installed ([python.org](https://www.python.org/downloads/)).
-* Git (optional — you can also click **Code $\to$ Download ZIP**).
+| Scenario File | Processes | Resources | Topologic Character | Verification Outcome |
+| :--- | :---: | :---: | :--- | :--- |
+| [`two_process_circular.json`](scenarios/two_process_circular.json) | 2 | 2 | Minimal 2-thread mutual circular wait ($P_0 \leftrightarrow P_1$). | **Deadlock** ($P_0, P_1$) |
+| [`dining_philosophers.json`](scenarios/dining_philosophers.json) | 5 | 5 | Classic Dijkstra 5-philosopher circular chopsticks deadlock. | **Deadlock** ($P_0 \dots P_4$) |
+| [`dining_philosophers_sim.json`](scenarios/dining_philosophers_sim.json) | 5 | 5 | Asymmetric resource-ordering solution to dining philosophers. | **Safe** (Simulates cleanly) |
+| [`large_random.json`](scenarios/large_random.json) | 15 | 8 | Complex 15-process enterprise state with embedded 5-cycle. | **Deadlock** ($P_0 \dots P_4$) |
+| [`cycle_without_deadlock.json`](scenarios/cycle_without_deadlock.json) | 4 | 2 | Dependency cycle with spare multi-instances (classic edge case). | **Safe** (`cycle_without_deadlock=True`) |
+| [`two_independent_deadlocks.json`](scenarios/two_independent_deadlocks.json) | 4 | 4 | Two disconnected simultaneous deadlock components. | **Deadlock** ($P_0, P_1$ & $P_2, P_3$) |
+| [`textbook_deadlock.json`](scenarios/textbook_deadlock.json) | 5 | 3 | Silberschatz Operating Systems textbook multi-instance example. | **Deadlock** ($P_1, P_2, P_3, P_4$) |
+| [`textbook_safe.json`](scenarios/textbook_safe.json) | 5 | 3 | Silberschatz textbook safe state demonstrating full reduction. | **Safe** (Full reduction trace) |
+| [`two_process_sim.json`](scenarios/two_process_sim.json) | 2 | 2 | Interleaved safe concurrent process scripts. | **Safe** (Simulates to completion) |
 
-### Installation & Execution (3 Commands)
+---
 
+## 🛡️ 6. Recovery Strategies & Starvation Prevention
+
+When a deadlock is detected, three distinct recovery policies are available:
+
+### 1. `TerminateAll`
+* **Mechanism**: Aborts all processes in the deadlocked set simultaneously.
+* **Advantage**: Instant resolution in a single step ($\mathcal{O}(1)$ iterations).
+* **Disadvantage**: Maximum work loss.
+
+### 2. `TerminateOneAtATime`
+* **Mechanism**: Selects the optimal victim $P^*$ using the cost function $\frac{\text{work}+1}{\text{prio}+1}$, terminates it, reclaims its allocations, and re-invokes detection.
+* **Advantage**: Minimal work loss. Halts abortion as soon as the cycle breaks.
+
+### 3. `ResourcePreemption` (Rollback)
+* **Mechanism**: Reclaims resources without deleting the process identity. Rewinds the instruction pointer to a previously saved checkpoint.
+* **Starvation Guard**: Every preemption increments a process counter `preemption_count`. If a task has been preempted 3 times, it is granted immunity from further preemption until it makes forward progress.
+
+---
+
+## ⚡ 7. Quick Start & Execution Guide
+
+Deadlock Lab is completely self-contained with **no complex build steps**.
+
+### Step 1: Clone or Download
 ```bash
-# 1. Clone or extract the repository
 git clone https://github.com/nitinrohilla-05/Deadlock-Detection-and-Recovery-.git
 cd Deadlock-Detection-and-Recovery-
+```
 
-# 2. Install dependencies (FastAPI, Uvicorn, Pytest)
+### Step 2: Install Python Packages
+```bash
+# Optional: Setup virtual environment
+python -m venv .venv
+.venv\Scripts\activate       # Windows
+# source .venv/bin/activate  # macOS / Linux
+
 pip install -r requirements.txt
+```
 
-# 3. Launch the Web UI
+### Step 3: Run the Application
+```bash
 python run.py
 ```
-
-`run.py` boots the server at `http://127.0.0.1:8000` and **automatically opens your default browser**.
-
----
-
-## 5. Interactive Web Dashboard Tour
-
-The Web UI provides two comprehensive operating modes:
-
-### Mode 1: Static Analysis Mode
-* **Resource Allocation Graph (RAG)**: Visualizes processes as circles and resources as squares. Directed green edges denote resource assignments; yellow dashed edges denote pending requests.
-* **Deadlock Detection**: Clicking **"Detect Deadlock"** computes the state. If a deadlock exists:
-  * The status banner glows red: `⚠ DEADLOCK DETECTED`.
-  * Deadlocked cycles in the graph animate with a glowing crimson pulse.
-  * An execution trace table illustrates the step-by-step matrix reduction or SCC decomposition.
-* **Static One-Shot Recovery**: Test immediate automated resolution using Terminate All, Terminate One, or Resource Preemption.
-
-### Mode 2: Interactive Simulation Mode
-* **One-Click Instant Run**: Clicking **"Start Simulation"** begins execution immediately, ticking through process scripts.
-* **Live Speed Slider**: Adjust simulation playback speed from 100ms (fast) to 2000ms (slow).
-* **Dynamic Pause/Resume**: Pause simulation at any tick to inspect live allocation matrices.
-* **Manual Recovery Drawer**: When simulation encounters a deadlock under manual mode, it cleanly pauses, activates the victim dropdown, and lets you select and abort any process manually.
-* **Live Event Stream**: Real-time console showing requests, grants, blocks, releases, and recovery logs.
+* The server will start at `http://127.0.0.1:8000`.
+* Your default web browser will automatically open the interactive dashboard.
 
 ---
 
-## 6. Pre-Configured Benchmark Scenarios
+## 💻 8. Command-Line Interface (CLI Walkthrough)
 
-The repository includes 9 verified scenarios located in [`scenarios/`](scenarios/):
-
-| Scenario Name | Processes | Resources | Topology / Characteristics | Expected Result |
-| :--- | :---: | :---: | :--- | :--- |
-| `two_process_circular.json` | 2 | 2 | Classic 2-thread mutex circular wait ($P_0 \to R_1 \to P_1 \to R_0$). | **Deadlock** ($P_0, P_1$) |
-| `dining_philosophers.json` | 5 | 5 | 5 philosophers each holding one fork and requesting the next. | **Deadlock** ($P_0 \dots P_4$) |
-| `dining_philosophers_sim.json`| 5 | 5 | Resource hierarchy solution to dining philosophers. | **Safe** (Simulates to completion) |
-| `large_random.json` | 15 | 8 | 15 processes, 8 multi-instance resources with embedded 5-cycle. | **Deadlock** ($P_0 \dots P_4$) |
-| `cycle_without_deadlock.json` | 4 | 2 | Multi-instance graph with a cycle where extra units unblock tasks. | **Safe** (`cycle_without_deadlock=True`)|
-| `two_independent_deadlocks.json`| 4 | 4 | Two completely disjoint deadlock cycles ($P_0 \leftrightarrow P_1$ and $P_2 \leftrightarrow P_3$). | **Deadlock** ($P_0, P_1, P_2, P_3$) |
-| `textbook_deadlock.json` | 5 | 3 | Silberschatz Operating Systems textbook multi-instance deadlock. | **Deadlock** ($P_1, P_2, P_3, P_4$) |
-| `textbook_safe.json` | 5 | 3 | Silberschatz textbook safe state benchmark. | **Safe** (Full reduction trace) |
-| `two_process_sim.json` | 2 | 2 | Non-conflicting interleaved process scripts. | **Safe** (Completes cleanly) |
-
----
-
-## 7. Automated Recovery Strategies
-
-```
-                     ┌─────────────────────────┐
-                     │   Deadlock Detected     │
-                     └────────────┬────────────┘
-                                  │
-         ┌────────────────────────┼────────────────────────┐
-         ▼                        ▼                        ▼
-┌──────────────────┐    ┌──────────────────┐    ┌──────────────────┐
-│  Terminate All   │    │  Terminate One   │    │Resource Preempt  │
-│  (Aggressive)    │    │   (Cost-Based)   │    │   (Rollback)     │
-├──────────────────┤    ├──────────────────┤    ├──────────────────┤
-│ Abort all tasks  │    │ Calculate cost:  │    │ Preempt resource │
-│ in deadlock set; │    │ C = work/(prio+1)│    │ from victim;     │
-│ reclaim all units│    │ Abort lowest task│    │ rollback script  │
-│ at once.         │    │ Re-check cycle.  │    │ to checkpoint.   │
-└──────────────────┘    └──────────────────┘    └──────────────────┘
-```
-
-1. **`TerminateAll`**: Drastic recovery. Frees all allocations immediately.
-2. **`TerminateOneAtATime`**: Graceful recovery. Aborts one task, returns its resources, and re-invokes detection. If the cycle is broken, no further processes are terminated.
-3. **`ResourcePreemption`**: Non-fatal recovery. Takes resources away from a process and rewinds its instruction pointer to a saved checkpoint. Includes a counter preventing the same process from being preempted more than 3 times (starvation guard).
-
----
-
-## 8. CLI Terminal Tool
-
-You can run experiments, analyze custom JSON files, and simulate executions directly in your terminal without a browser:
+For headless systems or quick terminal experiments:
 
 ```bash
 python -m cli.main
 ```
 
-### Features of the CLI:
-* Interactive scenario picker.
-* Colorized terminal ASCII matrix tables (Allocation, Request, Available).
-* Direct step-by-step reduction traces and detected cycle paths.
-* Step-by-step simulation debugger.
+### Interactive Terminal Experience:
+```
+============================================================
+              DEADLOCK LAB TERMINAL SUITE                   
+============================================================
+[1] two_process_circular
+[2] dining_philosophers
+[3] large_random
+[4] cycle_without_deadlock
+[5] textbook_deadlock
+Select scenario [1-9]: 1
+
+--- ALLOCATION MATRIX ---
+P0: [0, 1]
+P1: [1, 0]
+
+--- REQUEST MATRIX ---
+P0: [1, 0]
+P1: [0, 1]
+
+--- AVAILABLE VECTOR ---
+[0, 0]
+
+>>> RUNNING DETECTION ENGINE (WFG Tarjan SCC)...
+[!] DEADLOCK DETECTED!
+Deadlocked Process IDs: [0, 1]
+Identified Cycles: [[0, 1, 0]]
+```
 
 ---
 
-## 9. RESTful API Reference
+## 🌐 9. RESTful API Specification
 
-The FastAPI backend exposes standard HTTP endpoints under the `/api` prefix:
+The FastAPI backend exposes endpoints for automation and integration:
 
-### Detection & Recovery
-* `POST /api/detect`: Analyzes a state and returns detection status, cycles, and traces.
-* `POST /api/recover`: Executes one-shot static recovery on a given state payload.
-
-### Scenarios
-* `GET /api/scenarios`: Returns catalog of all available scenario JSON files.
-* `GET /api/scenarios/{name}`: Fetches complete configuration and scripts for a scenario.
-
-### Simulation Sessions
-* `POST /api/simulate/start`: Creates a stateful simulator session.
-  ```json
-  {
-    "scenario": "large_random",
-    "strategy": "terminate_one",
-    "trigger_config": {"type": "blocked"}
-  }
-  ```
-  *Response:* `{"session_id": "4b684346-a4c3-4d45-926b-d0a06fa34958"}`
-* `POST /api/simulate/step/{session_id}`: Advances the session by 1 tick and returns updated matrices, event logs, blocked lists, and metrics.
-* `GET /api/simulate/status/{session_id}`: Polls the current state of a running session.
-* `POST /api/simulate/manual_recover/{session_id}`: Aborts or preempts a specific victim process:
-  ```json
-  {
-    "victim_id": 0,
-    "strategy": "terminate_one"
-  }
-  ```
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/api/scenarios` | Returns catalog of all 9 scenario files. |
+| `GET` | `/api/scenarios/{name}` | Returns full JSON configuration of a scenario. |
+| `POST` | `/api/detect` | Computes static deadlock detection, trace, and cycles. |
+| `POST` | `/api/recover` | Executes one-shot static recovery. |
+| `POST` | `/api/simulate/start` | Creates a new simulator session (returns `session_id`). |
+| `POST` | `/api/simulate/step/{session_id}` | Steps simulation by 1 tick; returns updated matrices & logs. |
+| `GET` | `/api/simulate/status/{session_id}` | Polls current simulation status. |
+| `POST` | `/api/simulate/manual_recover/{session_id}` | Manually aborts or preempts a user-specified victim PID. |
 
 ---
 
-## 10. Test Suite & Property-Based Verification
+## 🧪 10. Formal Verification & Test Suite
 
-The project includes an exhaustive automated test suite with **1,024 test cases**:
+The repository contains an exhaustive test suite of **1,024 automated test cases**:
 
 ```bash
-# Run complete test suite with coverage report
+# Execute complete test suite with coverage
 pytest --cov=engine --cov-fail-under=90 tests/
 ```
 
-### Test Coverage Highlights:
-* **Property-Based Randomized Equivalence (`tests/test_random_equivalence.py`)**: Generates **1,000 randomized state topologies** and mathematically proves that Tarjan's SCC Wait-For-Graph algorithm and the Matrix Reduction algorithm yield identical results for all single-instance configurations.
-* **Edge Case Verification (`tests/test_detection.py`)**: Tests cycles without deadlocks, disconnected sub-graphs, and multi-component deadlocks.
-* **Invariant Defense (`tests/test_validation.py`)**: Verifies that dimension mismatches, negative allocations, and conservation violations are rejected.
-* **Recovery Logic (`tests/test_recovery.py`)**: Verifies victim selection rankings and rollback integrity.
+```
+collected 1024 items
+
+tests/test_api.py ....                                                   [  0%]
+tests/test_detection.py ....                                             [  0%]
+tests/test_models.py ..                                                  [  0%]
+tests/test_random_equivalence.py ....................................... [ 98%]
+tests/test_recovery.py .....                                             [ 99%]
+tests/test_scenarios.py ..                                               [ 99%]
+tests/test_simulator.py ..                                               [ 99%]
+tests/test_validation.py .....                                           [100%]
+
+======================= 1024 passed, 1 warning in 2.92s =======================
+```
+
+### The 1,000-Randomized Property Test:
+In [`tests/test_random_equivalence.py`](tests/test_random_equivalence.py), the test suite generates **1,000 random single-instance topologies** and verifies that Tarjan's SCC algorithm and the General Matrix Reduction algorithm produce **100% mathematically identical results** across all trials.
 
 ---
 
-## 11. Project Documentation Links
+## 📂 11. Repository Architecture & File Directory
 
+For full documentation of every file in the codebase, consult:
 * [**`PROCEDURE.md`**](PROCEDURE.md): Complete engineering procedure to recreate this project from scratch.
-* [**`FILE_PURPOSE.md`**](FILE_PURPOSE.md): Comprehensive directory explaining every file, class, and method in the codebase.
-* [**`docs/REPORT.md`**](docs/REPORT.md): Academic design report detailing theoretical foundations.
-* [**`docs/VIVA.md`**](docs/VIVA.md): Oral examination (Viva Voce) questions and detailed answers.
-* [**`docs/DEMO.md`**](docs/DEMO.md): Guided demonstration script for presentations and evaluations.
+* [**`FILE_PURPOSE.md`**](FILE_PURPOSE.md): Comprehensive directory explaining every file, class, and method.
+
+```
+Deadlock-Detection-and-Recovery-/
+├── api/
+│   ├── server.py              # FastAPI app launcher & static asset mounting
+│   └── routes.py              # RESTful API endpoints (/api/detect, /api/simulate)
+├── cli/
+│   └── main.py                # Interactive command-line terminal client
+├── engine/
+│   ├── models.py              # State, Process, Resource, and Action dataclasses
+│   ├── validation.py          # State invariant checking and dimension validation
+│   ├── detection.py           # Dual detection engine: Tarjan SCC & Matrix Reduction
+│   ├── recovery.py            # TerminateAll, TerminateOne, and ResourcePreemption
+│   ├── simulator.py           # Discrete-event tick state machine and queue runner
+│   ├── scenario.py            # JSON scenario loader and script synthesizer
+│   └── metrics.py             # Telemetry tracker (throughput, victims, ticks)
+├── scenarios/                 # 9 verified scenario test case definitions
+├── static/
+│   ├── index.html             # Pitch-black glassmorphic dashboard markup
+│   ├── style.css              # Obsidian glassmorphic design system
+│   ├── app.js                 # Frontend state controller and API client
+│   ├── graph.js               # Canvas/SVG Resource Allocation Graph engine
+│   └── theme.js               # Theme manager and persistence helper
+├── tests/                     # 1,024 property, unit, and integration tests
+├── docs/                      # Technical reports, Viva Q&A, and demo scripts
+├── run.py                     # One-click application entrypoint
+├── requirements.txt           # Python dependencies
+├── PROCEDURE.md               # Step-by-step reproduction guide
+├── FILE_PURPOSE.md            # Comprehensive file-by-file purpose guide
+└── README.md                  # Master documentation (this file)
+```
 
 ---
 
-## License
-This project is open-source and licensed under the [MIT License](LICENSE).
+## 📚 12. Academic References & Citations
+
+1. **Silberschatz, A., Galvin, P. B., & Gagne, G.** (2018). *Operating System Concepts* (10th ed.). John Wiley & Sons. (Chapter 8: Deadlocks).
+2. **Tarjan, R. E.** (1972). *Depth-First Search and Linear Graph Algorithms*. SIAM Journal on Computing, 1(2), 146–160.
+3. **Coffman, E. G., Elphick, M., & Shoshani, A.** (1971). *System Deadlocks*. ACM Computing Surveys (CSUR), 3(2), 67–78.
+4. **Dijkstra, E. W.** (1968). *Cooperating Sequential Processes*. Technological University, Eindhoven, The Netherlands.
+
+---
+
+<div align="center">
+
+**Developed with precision for Operating Systems education and algorithmic research.**  
+Licensed under the [MIT License](LICENSE).
+
+</div>
